@@ -147,20 +147,3 @@ class Etiquetador(object):
                                            self.weight_range)
 
         return tokens_weight
-
-
-if __name__ == '__main__':
-    tests = ['test.txt', 'test2.txt',
-             'test3.txt', 'test4.txt',]
-
-    for test in tests:
-        test_f = codecs.open(test, 'r', 'utf-8')
-        test_content = test_f.read()
-        test_f.close()
-
-        tagger = TermExtractorPTBR(weight_range=(1, 4), word_min_size=3,
-                                   min_occurrences=2, max_tags=10)
-        tags = tagger(test_content)
-
-        for tag, weight in tags:
-            print tag, weight
