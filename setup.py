@@ -10,7 +10,7 @@ setup(
     author_email='sergio@tracy.com.br',
     url='http://github.com/TracyWebTech/etiquetando',
     license='BSD',
-    install_requires=['stemming>=1.0'],
+    install_requires=['stemming>=1.0', 'repoze.lru>=0.6'],
     include_package_data=True,
     zip_safe=False,
     classifiers=[

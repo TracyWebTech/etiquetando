@@ -7,14 +7,19 @@ import codecs
 import math
 
 from stemming.porter2 import stem
+from repoze.lru import lru_cache
 
 
 SPLIT_RE = re.compile(r'[\n\r\s\t' + string.punctuation + ']')
-EMAIL_RE = re.compile(r"[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*")
+EMAIL_RE = re.compile(r"<?(mailto:)?[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*>?")
 URL_RE = re.compile(r'https?://[^ \t\r\n\<]+')
 
 DATA_DIR = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'data')
 
+
+# cached version of stem
+#   maxsize 4096 will use about 128 kb of memory
+stem = lru_cache(maxsize=4096)(stem)
 
 class Etiquetador(object):
     def __init__(self, word_min_size=2, min_occurrences=0,
